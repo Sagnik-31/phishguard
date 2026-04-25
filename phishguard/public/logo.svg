@@ -1,0 +1,7 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">PhishGuard shield</title>
+  <desc id="desc">A cyan cybersecurity shield icon.</desc>
+  <path d="M32 4L54 13V29C54 44 44 56 32 60C20 56 10 44 10 29V13L32 4Z" fill="#06B6D4" fill-opacity="0.14" stroke="#22D3EE" stroke-width="4" stroke-linejoin="round"/>
+  <path d="M32 15L44 20V30C44 38 39 45 32 48C25 45 20 38 20 30V20L32 15Z" fill="#22D3EE" fill-opacity="0.2" stroke="#22D3EE" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M27 31L31 35L39 25" stroke="#ECFEFF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
