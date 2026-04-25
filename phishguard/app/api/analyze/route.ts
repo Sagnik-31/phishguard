@@ -286,18 +286,28 @@ async function callGroq(input: string): Promise<GroqResponse> {
   throw new Error("Groq rate limit exceeded after retries.");
 }
 
+const CORS_HEADERS = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type",
+};
+
+export async function OPTIONS() {
+  return new NextResponse(null, { status: 204, headers: CORS_HEADERS });
+}
+
 export async function POST(request: Request) {
   try {
     const body = (await request.json()) as { input?: unknown };
     const input = typeof body.input === "string" ? body.input.trim().slice(0, MAX_INPUT_LENGTH) : "";
 
     if (input.length < 10) {
-      return NextResponse.json({ error: "Input must be at least 10 characters." }, { status: 400 });
+      return NextResponse.json({ error: "Input must be at least 10 characters." }, { status: 400, headers: CORS_HEADERS });
     }
 
     if (isRateLimited()) {
       console.warn("PhishGuard API rate limit hit. Returning fallback result.");
-      return NextResponse.json(getFallbackResult(), { status: 200 });
+      return NextResponse.json(getFallbackResult(), { status: 200, headers: CORS_HEADERS });
     }
 
     const groq = await callGroq(input);
@@ -307,9 +317,9 @@ export async function POST(request: Request) {
       throw new Error("Groq did not return a text response.");
     }
 
-    return NextResponse.json(normalizeAnalysis(parseGroqJson(text)), { status: 200 });
+    return NextResponse.json(normalizeAnalysis(parseGroqJson(text)), { status: 200, headers: CORS_HEADERS });
   } catch (error) {
     console.error("PhishGuard analysis fallback:", error instanceof Error ? error.message : error);
-    return NextResponse.json(getFallbackResult(), { status: 200 });
+    return NextResponse.json(getFallbackResult(), { status: 200, headers: CORS_HEADERS });
   }
 }
