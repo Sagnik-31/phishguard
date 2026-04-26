@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>PhishGuard</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <header class="header">
+        <div class="brand">
+          <span class="logo" aria-hidden="true">PG</span>
+          <div>
+            <h1>PhishGuard</h1>
+            <p>Forensics Sandbox</p>
+          </div>
+        </div>
+        <span id="statusPill" class="status-pill">Ready</span>
+      </header>
+
+      <section class="target-card" aria-label="Current page">
+        <span class="label">Current page</span>
+        <p id="currentUrl" class="url">Loading tab...</p>
+      </section>
+
+      <button id="analyzeButton" class="primary-button" type="button">
+        Analyze Current Page
+      </button>
+
+      <section id="resultSection" class="result-card hidden" aria-live="polite">
+        <div class="result-topline">
+          <span class="label">Risk level</span>
+          <span id="riskBadge" class="risk-badge">--</span>
+        </div>
+        <div class="score-row">
+          <span id="scoreValue" class="score">--</span>
+          <span class="score-suffix">%</span>
+        </div>
+        <p id="explanation" class="explanation"></p>
+        <div id="actions" class="actions"></div>
+        <button id="reportButton" class="ghost-button hidden" type="button">
+          View Full Report
+        </button>
+      </section>
+
+      <p id="message" class="message" role="status"></p>
+    </main>
+
+    <script src="popup.js"></script>
+  </body>
+</html>
