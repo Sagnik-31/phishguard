@@ -7,10 +7,22 @@ const COOLDOWN_MS = 2500;
 const MAX_INPUT_LENGTH = 2000;
 const FALLBACK_MESSAGE = "⚠️ Using demo result due to API limits";
 
+const WEBMAIL_PATTERNS = [
+  "mail.google.com",
+  "outlook.live.com",
+  "outlook.office.com",
+  "mail.yahoo.com",
+];
+
 const elements = {
   analyzeButton: document.getElementById("analyzeButton"),
   reportButton: document.getElementById("reportButton"),
   currentUrl: document.getElementById("currentUrl"),
+  contextBadge: document.getElementById("contextBadge"),
+  emailPreview: document.getElementById("emailPreview"),
+  emailSubject: document.getElementById("emailSubject"),
+  emailSender: document.getElementById("emailSender"),
+  emailSnippet: document.getElementById("emailSnippet"),
   statusPill: document.getElementById("statusPill"),
   resultSection: document.getElementById("resultSection"),
   riskBadge: document.getElementById("riskBadge"),
@@ -21,9 +33,14 @@ const elements = {
 };
 
 let activeTabUrl = "";
+let activeTabId = null;
 let lastResult = null;
 let isLoading = false;
 let cooldownUntil = 0;
+let analysisMode = "website"; // "website" | "email"
+let extractedEmail = null;
+
+// ─── Bootstrap ──────────────────────────────────────────
 
 document.addEventListener("DOMContentLoaded", async () => {
   wireEvents();
@@ -39,10 +56,13 @@ function wireEvents() {
   elements.reportButton.addEventListener("click", openFullReport);
 }
 
+// ─── Tab & Context Detection ────────────────────────────
+
 async function loadActiveTab() {
   try {
     const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
     activeTabUrl = tab?.url || "";
+    activeTabId = tab?.id ?? null;
 
     if (!activeTabUrl) {
       setMessage("Unable to read the current tab URL.", "error");
@@ -52,11 +72,89 @@ async function loadActiveTab() {
 
     elements.currentUrl.textContent = activeTabUrl;
     elements.currentUrl.title = activeTabUrl;
+
+    // Detect if on a webmail page
+    const isWebmail = WEBMAIL_PATTERNS.some((pattern) => activeTabUrl.includes(pattern));
+
+    if (isWebmail) {
+      analysisMode = "email";
+      showContextBadge("📧 Email Detected");
+      elements.analyzeButton.textContent = "Analyze Email";
+      await tryExtractEmail();
+    } else {
+      analysisMode = "website";
+      showContextBadge("🌐 Website");
+      elements.analyzeButton.textContent = "Analyze Current Page";
+    }
   } catch (error) {
     setMessage("Chrome blocked access to the current tab.", "error");
     elements.currentUrl.textContent = "Unable to read current tab";
   }
 }
+
+function showContextBadge(text) {
+  elements.contextBadge.textContent = text;
+  elements.contextBadge.classList.remove("hidden");
+}
+
+// ─── Email Extraction ───────────────────────────────────
+
+async function tryExtractEmail() {
+  if (!activeTabId) {
+    return;
+  }
+
+  try {
+    const results = await chrome.scripting.executeScript({
+      target: { tabId: activeTabId },
+      files: ["content.js"],
+    });
+
+    const data = results?.[0]?.result;
+    console.log("[PhishGuard] Email extraction result:", data);
+
+    if (data && (data.subject || data.body)) {
+      extractedEmail = data;
+      showEmailPreview(data);
+    } else {
+      console.log("[PhishGuard] No email content found, falling back to URL.");
+      extractedEmail = null;
+      hideEmailPreview();
+      // Still in email mode but will analyze URL as fallback
+    }
+  } catch (error) {
+    console.error("[PhishGuard] Email extraction failed:", error);
+    extractedEmail = null;
+    hideEmailPreview();
+  }
+}
+
+function showEmailPreview(data) {
+  elements.emailPreview.classList.remove("hidden");
+  elements.emailSubject.textContent = data.subject
+    ? `📌 ${data.subject}`
+    : "Subject not detected";
+  elements.emailSender.textContent = data.sender
+    ? `From: ${data.sender}`
+    : "";
+  elements.emailSnippet.textContent = data.body
+    ? data.body.slice(0, 120) + (data.body.length > 120 ? "…" : "")
+    : "Body not detected";
+}
+
+function hideEmailPreview() {
+  elements.emailPreview.classList.add("hidden");
+}
+
+function buildEmailInput(email) {
+  const parts = [];
+  if (email.subject) parts.push(`Subject: ${email.subject}`);
+  if (email.sender) parts.push(`From: ${email.sender}`);
+  if (email.body) parts.push(`Body: ${email.body}`);
+  return parts.join("\n\n");
+}
+
+// ─── Storage ────────────────────────────────────────────
 
 async function hydrateFromStorage() {
   try {
@@ -70,6 +168,8 @@ async function hydrateFromStorage() {
     // Storage is optional for the core flow.
   }
 }
+
+// ─── Analysis ───────────────────────────────────────────
 
 async function analyzeCurrentPage() {
   const now = Date.now();
@@ -91,10 +191,18 @@ async function analyzeCurrentPage() {
   }
 
   setLoading(true);
-  setMessage("Scanning...", "muted");
+
+  // Decide input based on mode
+  let input;
+  if (analysisMode === "email" && extractedEmail && (extractedEmail.subject || extractedEmail.body)) {
+    input = buildEmailInput(extractedEmail).slice(0, MAX_INPUT_LENGTH);
+    setMessage("Analyzing email content…", "muted");
+  } else {
+    input = activeTabUrl.slice(0, MAX_INPUT_LENGTH);
+    setMessage(analysisMode === "email" ? "No email body found — analyzing URL…" : "Scanning website…", "muted");
+  }
 
   try {
-    const input = activeTabUrl.slice(0, MAX_INPUT_LENGTH);
     const response = await fetch(ANALYZE_ENDPOINT, {
       method: "POST",
       headers: {
@@ -106,12 +214,13 @@ async function analyzeCurrentPage() {
     const payload = await response.json();
 
     if (!response.ok) {
-      throw new Error(payload?.error || "PhishGuard could not analyze this page.");
+      throw new Error(payload?.error || "PhishGuard could not complete analysis.");
     }
 
     lastResult = {
       ...payload,
-      input: activeTabUrl,
+      input: analysisMode === "email" ? `[Email] ${extractedEmail?.subject || activeTabUrl}` : activeTabUrl,
+      mode: analysisMode,
       analyzedAt: new Date().toISOString(),
     };
 
@@ -130,6 +239,8 @@ async function analyzeCurrentPage() {
   }
 }
 
+// ─── Fallback ───────────────────────────────────────────
+
 function getFallbackResult(input) {
   return {
     riskLevel: "HIGH",
@@ -146,6 +257,8 @@ function getFallbackResult(input) {
     fallback: true,
   };
 }
+
+// ─── Render ─────────────────────────────────────────────
 
 function renderResult(result) {
   const riskLevel = normalizeRiskLevel(result.riskLevel);
@@ -178,14 +291,20 @@ function normalizeRiskLevel(riskLevel) {
   return "MEDIUM";
 }
 
+// ─── UI Helpers ─────────────────────────────────────────
+
 function setLoading(nextIsLoading) {
   isLoading = nextIsLoading;
   elements.analyzeButton.disabled = nextIsLoading || Date.now() < cooldownUntil;
-  elements.analyzeButton.textContent = nextIsLoading ? "Scanning..." : "Analyze Current Page";
-  elements.statusPill.classList.toggle("scanning", nextIsLoading);
+
   if (nextIsLoading) {
+    elements.analyzeButton.textContent = analysisMode === "email" ? "Analyzing Email…" : "Scanning…";
     setStatus("Scanning");
+  } else {
+    elements.analyzeButton.textContent = analysisMode === "email" ? "Analyze Email" : "Analyze Current Page";
   }
+
+  elements.statusPill.classList.toggle("scanning", nextIsLoading);
 }
 
 function startCooldown() {
@@ -195,7 +314,7 @@ function startCooldown() {
   window.setTimeout(() => {
     cooldownUntil = 0;
     elements.analyzeButton.disabled = false;
-    elements.analyzeButton.textContent = "Analyze Current Page";
+    elements.analyzeButton.textContent = analysisMode === "email" ? "Analyze Email" : "Analyze Current Page";
   }, COOLDOWN_MS);
 }
 

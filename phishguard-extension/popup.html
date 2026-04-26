@@ -22,6 +22,14 @@
       <section class="target-card" aria-label="Current page">
         <span class="label">Current page</span>
         <p id="currentUrl" class="url">Loading tab...</p>
+        <p id="contextBadge" class="context-badge hidden"></p>
+      </section>
+
+      <section id="emailPreview" class="email-preview hidden" aria-label="Email preview">
+        <span class="label">Detected email</span>
+        <p id="emailSubject" class="email-field"></p>
+        <p id="emailSender" class="email-field email-sender"></p>
+        <p id="emailSnippet" class="email-field email-snippet"></p>
       </section>
 
       <button id="analyzeButton" class="primary-button" type="button">
