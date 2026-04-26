@@ -51,32 +51,32 @@ export default function RiskScoreBanner({ result }: RiskScoreBannerProps) {
 
   return (
     <section
-      className={`bg-gray-900 border border-gray-800 rounded-xl p-6 ${getRiskBannerClasses(result.riskLevel)}`}
+      className={`bg-white border border-slate-200 shadow-sm rounded-2xl p-6 ${getRiskBannerClasses(result.riskLevel)}`}
       aria-label={`Risk score ${result.score} out of 100, ${result.riskLevel}`}
     >
       <div className="grid grid-cols-1 items-center gap-6 md:grid-cols-3">
         <div>
-          <p className="text-sm font-medium text-gray-400 uppercase tracking-wider">
+          <p className="text-sm font-semibold text-slate-500 uppercase tracking-wider">
             Risk level
           </p>
           <p className={`mt-2 text-4xl font-bold ${riskColor}`}>{result.riskLevel}</p>
         </div>
 
         <div className="text-left md:text-center">
-          <p className="text-sm font-medium text-gray-400 uppercase tracking-wider">
+          <p className="text-sm font-semibold text-slate-500 uppercase tracking-wider">
             Score
           </p>
-          <p className="mt-2 text-7xl font-bold text-gray-100">
+          <p className="mt-2 text-7xl font-bold text-slate-900">
             {displayScore}
-            <span className="text-2xl text-gray-500">/100</span>
+            <span className="text-2xl text-slate-400">/100</span>
           </p>
         </div>
 
         <div>
-          <p className="text-sm font-medium text-gray-400 uppercase tracking-wider">
+          <p className="text-sm font-semibold text-slate-500 uppercase tracking-wider">
             Verdict
           </p>
-          <p className="mt-2 text-sm text-gray-300 leading-relaxed">{getVerdict(result.riskLevel)}</p>
+          <p className="mt-2 text-sm text-slate-600 leading-relaxed font-medium">{getVerdict(result.riskLevel)}</p>
         </div>
       </div>
     </section>

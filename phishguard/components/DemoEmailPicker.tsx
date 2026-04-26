@@ -11,7 +11,7 @@ interface DemoEmailPickerProps {
 export default function DemoEmailPicker({ onSelectEmail }: DemoEmailPickerProps) {
   return (
     <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-      <label htmlFor="demo-email" className="text-gray-400 text-sm">
+      <label htmlFor="demo-email" className="text-slate-500 font-medium text-sm">
         Try a demo email →
       </label>
       <select
@@ -28,7 +28,7 @@ export default function DemoEmailPicker({ onSelectEmail }: DemoEmailPickerProps)
             });
           }
         }}
-        className="bg-gray-800 border border-gray-700 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 text-gray-100 rounded-lg px-4 py-3 outline-none transition-all text-sm"
+        className="bg-white border border-slate-200 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 text-slate-900 rounded-xl px-4 py-3 outline-none transition-all text-sm shadow-sm"
       >
         <option value="" disabled>
           -- Select a demo email --

@@ -39,23 +39,23 @@ export default function AnalysisPage() {
   }
 
   if (!loaded || !result) {
-    return <main className="min-h-screen bg-gray-950" aria-label="Loading analysis" />;
+    return <main className="min-h-screen bg-slate-50" aria-label="Loading analysis" />;
   }
 
   return (
-    <main className="min-h-screen bg-gray-950 text-gray-100">
+    <main className="min-h-screen bg-slate-50 text-slate-900">
       <Header />
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6">
         <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h1 className="text-2xl font-semibold text-gray-100">Threat analysis</h1>
-            <p className="mt-1 text-sm text-gray-500">Forensic summary and recommended next steps</p>
+            <h1 className="text-2xl font-semibold text-slate-900">Threat analysis</h1>
+            <p className="mt-1 text-sm text-slate-500">Forensic summary and recommended next steps</p>
           </div>
           <button
             type="button"
             onClick={analyzeAnother}
             aria-label="Analyze another email or URL"
-            className="border border-gray-700 hover:border-gray-600 text-gray-300 px-4 py-2 rounded-lg transition-colors"
+            className="border border-slate-300 hover:border-slate-400 bg-white shadow-sm text-slate-700 px-4 py-2 rounded-lg transition-colors font-medium text-sm"
           >
             Analyze another
           </button>

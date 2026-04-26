@@ -21,14 +21,14 @@ export default function HomePage() {
   }
 
   return (
-    <main className="min-h-screen bg-gray-950 text-gray-100">
+    <main className="min-h-screen bg-slate-50 text-slate-900">
       <Header />
-      <section className="mx-auto flex min-h-screen max-w-3xl flex-col items-center justify-center gap-6 px-4 py-12 sm:px-6">
+      <section className="mx-auto flex min-h-screen max-w-3xl flex-col items-center justify-center gap-8 px-4 py-12 sm:px-6">
         <div className="text-center">
-          <h1 className="text-4xl font-bold text-gray-100">
+          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-slate-900">
             Detect phishing. Before it&apos;s too late.
           </h1>
-          <p className="mt-4 text-gray-400 text-lg">
+          <p className="mt-4 text-slate-600 text-lg max-w-2xl mx-auto">
             Paste a suspicious email or URL and get a forensic threat assessment in seconds.
           </p>
         </div>
@@ -38,10 +38,6 @@ export default function HomePage() {
         <div className="w-full">
           <DemoEmailPicker onSelectEmail={handleDemoSelect} />
         </div>
-
-        <footer className="text-gray-600 text-xs">
-          PhishGuard uses Gemini AI for forensic analysis
-        </footer>
       </section>
     </main>
   );

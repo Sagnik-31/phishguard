@@ -36,8 +36,8 @@ export default function RiskBreakdown({ breakdown }: RiskBreakdownProps) {
   }, []);
 
   return (
-    <section className="bg-gray-900 border border-gray-800 rounded-xl p-6">
-      <h2 className="mb-4 text-sm font-medium text-gray-400 uppercase tracking-wider">
+    <section className="bg-white border border-slate-200 shadow-sm rounded-2xl p-6">
+      <h2 className="mb-4 text-sm font-semibold text-slate-500 uppercase tracking-wider">
         Risk breakdown
       </h2>
       <div className="flex flex-col gap-4">
@@ -45,16 +45,16 @@ export default function RiskBreakdown({ breakdown }: RiskBreakdownProps) {
           <div key={category.label}>
             <div className="mb-2 flex items-center justify-between gap-4">
               <div>
-                <p className="text-sm text-gray-300">{category.label}</p>
-                <p className={`text-xs uppercase ${getSeverityColor(category.severity)}`}>
+                <p className="text-sm font-medium text-slate-700">{category.label}</p>
+                <p className={`text-xs uppercase font-medium ${getSeverityColor(category.severity)}`}>
                   {category.severity}
                 </p>
               </div>
-              <span className="text-sm text-gray-400">{category.score}%</span>
+              <span className="text-sm font-medium text-slate-500">{category.score}%</span>
             </div>
-            <div className="h-2 overflow-hidden rounded-full bg-gray-800" aria-hidden="true">
+            <div className="h-2 overflow-hidden rounded-full bg-slate-100" aria-hidden="true">
               <div
-                className={`h-full rounded-full ${getProgressColor(category.score)} transition-all duration-1000 ease-out ${
+                className={`h-full rounded-full ${getProgressColor(category.severity)} transition-all duration-1000 ease-out ${
                   animate ? getWidthClass(category.score) : "w-0"
                 }`}
               />

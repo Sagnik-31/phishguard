@@ -140,7 +140,7 @@ export default function InputPanel({ input, onInputChange, demoResult }: InputPa
   }
 
   return (
-    <div className="bg-gray-900 border border-gray-800 rounded-xl p-6 w-full">
+    <div className="bg-white border border-slate-200 shadow-sm rounded-2xl p-6 w-full relative overflow-hidden">
       {isLoading ? <ScanningLoader /> : null}
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <div>
@@ -155,9 +155,9 @@ export default function InputPanel({ input, onInputChange, demoResult }: InputPa
             onChange={(event) => onInputChange(event.target.value.slice(0, MAX_INPUT_LENGTH))}
             placeholder="Paste a suspicious email or URL here..."
             aria-label="Paste a suspicious email or URL here"
-            className="bg-gray-800 border border-gray-700 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 text-gray-100 rounded-lg px-4 py-3 outline-none transition-all w-full resize-y text-sm"
+            className="bg-slate-50 border border-slate-200 focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 text-slate-900 rounded-xl px-4 py-3 outline-none transition-all w-full resize-y text-sm placeholder:text-slate-400"
           />
-          <div className="mt-2 text-right text-gray-500 text-xs">
+          <div className="mt-2 text-right text-slate-400 text-xs font-medium">
             {input.length.toLocaleString()} / {MAX_INPUT_LENGTH.toLocaleString()} characters
           </div>
         </div>
@@ -172,7 +172,7 @@ export default function InputPanel({ input, onInputChange, demoResult }: InputPa
           type="submit"
           disabled={isSubmitDisabled}
           aria-label="Analyze for threats"
-          className="bg-cyan-500 hover:bg-cyan-400 text-gray-950 font-medium px-6 py-2.5 rounded-lg transition-colors w-full disabled:cursor-not-allowed disabled:opacity-50 flex items-center justify-center gap-2"
+          className="bg-blue-600 hover:bg-blue-700 text-white font-medium px-6 py-3 rounded-xl transition-colors w-full disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-400 flex items-center justify-center gap-2 shadow-sm"
         >
           <Search className="h-4 w-4" aria-hidden="true" />
           {isLoading ? "Analyzing..." : isCoolingDown ? "Cooling down..." : "Analyze for threats"}

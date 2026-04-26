@@ -29,22 +29,22 @@ export default function FindingsCard({ findings }: FindingsCardProps) {
   );
 
   return (
-    <section className="bg-gray-900 border border-gray-800 rounded-xl p-6">
+    <section className="bg-white border border-slate-200 shadow-sm rounded-2xl p-6">
       <div className="mb-4 flex items-center justify-between gap-4">
-        <h2 className="text-sm font-medium text-gray-400 uppercase tracking-wider">
+        <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wider">
           Findings
         </h2>
-        <span className="bg-gray-800 text-gray-400 text-xs px-3 py-1 rounded-full">
+        <span className="bg-slate-100 text-slate-600 text-xs px-3 py-1 rounded-full font-medium">
           {findings.length}
         </span>
       </div>
 
       {sortedFindings.length === 0 ? (
-        <div className="rounded-lg border border-gray-800 bg-gray-800 p-4 text-sm text-gray-400">
+        <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm text-slate-500">
           No forensic findings were detected in this input.
         </div>
       ) : (
-        <div className="divide-y divide-gray-800">
+        <div className="divide-y divide-slate-100">
           {sortedFindings.map((finding) => (
             <div key={finding.id} className="flex flex-col gap-3 py-4 first:pt-0 last:pb-0 sm:flex-row sm:items-start">
               <div className="flex items-center gap-2 sm:pt-1">
@@ -58,12 +58,12 @@ export default function FindingsCard({ findings }: FindingsCardProps) {
               </div>
 
               <div className="min-w-0 flex-1">
-                <p className="font-medium text-gray-100">{finding.category}</p>
-                <p className="mt-1 text-sm text-gray-400 leading-relaxed">{finding.detail}</p>
+                <p className="font-semibold text-slate-900">{finding.category}</p>
+                <p className="mt-1 text-sm text-slate-600 leading-relaxed">{finding.detail}</p>
               </div>
 
               {finding.snippet ? (
-                <span className="max-w-full self-start truncate font-mono text-xs bg-gray-800 px-2 py-0.5 rounded text-gray-300" title={finding.snippet}>
+                <span className="max-w-full self-start truncate font-mono text-xs bg-slate-100 px-2 py-1 rounded-md text-slate-600 border border-slate-200" title={finding.snippet}>
                   {finding.snippet}
                 </span>
               ) : null}

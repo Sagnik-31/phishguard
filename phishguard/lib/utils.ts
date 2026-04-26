@@ -2,30 +2,30 @@ import type { BreakdownSeverity, RiskLevel } from "./types";
 
 export function getRiskColor(riskLevel: RiskLevel): string {
   if (riskLevel === "HIGH") {
-    return "text-red-400";
+    return "text-red-600";
   }
 
   if (riskLevel === "MEDIUM") {
-    return "text-amber-400";
+    return "text-amber-600";
   }
 
-  return "text-emerald-400";
+  return "text-emerald-600";
 }
 
 export function getSeverityColor(severity: BreakdownSeverity): string {
   if (severity === "critical") {
-    return "text-red-400";
+    return "text-red-600";
   }
 
   if (severity === "warning") {
-    return "text-amber-400";
+    return "text-amber-600";
   }
 
   if (severity === "safe") {
-    return "text-emerald-400";
+    return "text-emerald-600";
   }
 
-  return "text-cyan-400";
+  return "text-cyan-600";
 }
 
 export function getRiskBannerClasses(riskLevel: RiskLevel): string {
@@ -69,14 +69,18 @@ export function formatAnalyzedAt(isoString: string): string {
   return `${value("month")} ${value("day")}, ${value("year")} · ${value("hour")}:${value("minute")}`;
 }
 
-export function getProgressColor(score: number): string {
-  if (score >= 66) {
+export function getProgressColor(severity: BreakdownSeverity): string {
+  if (severity === "critical") {
     return "bg-red-500";
   }
 
-  if (score >= 31) {
+  if (severity === "warning") {
     return "bg-amber-500";
   }
 
-  return "bg-emerald-500";
+  if (severity === "safe") {
+    return "bg-emerald-500";
+  }
+
+  return "bg-cyan-500";
 }

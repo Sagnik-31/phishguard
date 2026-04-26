@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#030712",
+  themeColor: "#f8fafc",
 };
 
 export default function RootLayout({
@@ -22,8 +22,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="bg-gray-950">
-      <body className={`${inter.className} bg-gray-950 text-gray-100 antialiased`}>
+    <html lang="en" className="bg-slate-50">
+      <body className={`${inter.className} bg-slate-50 text-slate-900 antialiased`}>
         {children}
       </body>
     </html>
