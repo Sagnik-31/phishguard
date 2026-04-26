@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-background": "#191c21",
+                        "on-secondary-fixed": "#011d35",
+                        "surface-container": "#ecedf5",
+                        "error": "#ba1a1a",
+                        "secondary-fixed-dim": "#b0c9e8",
+                        "tertiary-container": "#a06900",
+                        "inverse-surface": "#2e3036",
+                        "outline": "#717783",
+                        "tertiary-fixed": "#ffddb4",
+                        "inverse-on-surface": "#eff0f8",
+                        "on-error": "#ffffff",
+                        "tertiary-fixed-dim": "#ffb953",
+                        "on-primary-fixed": "#001c39",
+                        "surface": "#f8f9ff",
+                        "on-primary-container": "#fdfcff",
+                        "on-error-container": "#93000a",
+                        "outline-variant": "#c1c7d3",
+                        "on-secondary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "primary-fixed": "#d4e3ff",
+                        "on-secondary-container": "#4b637e",
+                        "on-tertiary-fixed": "#291800",
+                        "surface-dim": "#d8dae1",
+                        "secondary": "#49607c",
+                        "on-tertiary-container": "#fffbff",
+                        "tertiary": "#7f5300",
+                        "background": "#f8f9ff",
+                        "primary-fixed-dim": "#a4c9ff",
+                        "surface-container-highest": "#e1e2e9",
+                        "surface-variant": "#e1e2e9",
+                        "secondary-container": "#c7dfff",
+                        "on-primary-fixed-variant": "#004883",
+                        "primary-container": "#2976c7",
+                        "surface-container-high": "#e6e8ef",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-fixed-variant": "#314863",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#f2f3fb",
+                        "on-surface-variant": "#414751",
+                        "secondary-fixed": "#d1e4ff",
+                        "on-tertiary-fixed-variant": "#633f00",
+                        "on-surface": "#191c21",
+                        "inverse-primary": "#a4c9ff",
+                        "surface-bright": "#f8f9ff",
+                        "on-primary": "#ffffff",
+                        "surface-tint": "#0060ac",
+                        "primary": "#005da7"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "sm": "16px",
+                        "md": "24px",
+                        "margin": "32px",
+                        "xl": "64px",
+                        "base": "4px",
+                        "xs": "8px",
+                        "gutter": "24px",
+                        "lg": "40px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "label-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "h1": ["Inter"],
+                        "h3": ["Inter"],
+                        "h2": ["Inter"],
+                        "body-sm": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                        "label-md": ["14px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "h1": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "h3": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "h2": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        body { background-color: #f8f9ff; }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(8px);
+        }
+    </style>
+</head>
+<body class="font-body-md text-on-surface">
+<!-- TopNavBar -->
+<header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-slate-200 shadow-sm">
+<div class="flex justify-between items-center h-16 w-full px-6 md:px-12 max-w-7xl mx-auto font-['Inter'] antialiased tracking-tight">
+<div class="text-2xl font-extrabold tracking-tighter text-blue-600">PhishGuard</div>
+<nav class="hidden md:flex gap-8 items-center">
+<a class="text-slate-600 font-medium hover:text-blue-500 transition-colors duration-200" href="#">Home</a>
+<a class="text-slate-600 font-medium hover:text-blue-500 transition-colors duration-200" href="#">Scanner</a>
+<a class="text-blue-600 font-semibold border-b-2 border-blue-600 pb-1 transition-colors duration-200" href="#">Dashboard</a>
+<a class="text-slate-600 font-medium hover:text-blue-500 transition-colors duration-200" href="#">Documentation</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="hidden md:block text-slate-600 font-medium hover:text-slate-900 transition-colors duration-200">Sign In</button>
+<button class="bg-primary px-6 py-2 rounded-lg text-white font-semibold hover:opacity-90 active:opacity-80 transition-all duration-100">Analyze Now</button>
+</div>
+</div>
+</header>
+<main class="max-w-7xl mx-auto px-6 md:px-12 py-10">
+<!-- Header Section -->
+<div class="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div>
+<h1 class="font-h1 text-h1 text-on-surface mb-2">Threat analysis</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">
+                    Forensic summary for investigation #PG-8821. Detailed inspection of incoming communication payload, metadata, and embedded redirects.
+                </p>
+</div>
+<div class="flex gap-3">
+<span class="flex items-center gap-2 px-4 py-2 bg-surface-container-high rounded-full text-label-md font-label-md">
+<span class="material-symbols-outlined text-outline" data-icon="calendar_today">calendar_today</span>
+                    Oct 24, 2024
+                </span>
+<span class="flex items-center gap-2 px-4 py-2 bg-surface-container-high rounded-full text-label-md font-label-md">
+<span class="material-symbols-outlined text-outline" data-icon="fingerprint">fingerprint</span>
+                    ID: 489-0X2
+                </span>
+</div>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Risk Level Card -->
+<div class="md:col-span-4 bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant p-md flex flex-col justify-between overflow-hidden relative">
+<div class="absolute top-0 right-0 w-32 h-32 bg-tertiary/10 rounded-full -mr-16 -mt-16"></div>
+<div>
+<h3 class="font-label-md text-label-md text-on-surface-variant uppercase mb-4">Risk Level</h3>
+<div class="flex items-baseline gap-2 mb-2">
+<span class="text-[56px] font-bold leading-none text-tertiary">48</span>
+<span class="text-h3 font-h3 text-outline">/100</span>
+</div>
+<div class="inline-flex items-center gap-2 px-3 py-1 bg-tertiary-fixed rounded-full text-on-tertiary-fixed font-label-md">
+<span class="material-symbols-outlined text-[18px]" data-icon="warning" style="font-variation-settings: 'FILL' 1;">warning</span>
+                        MEDIUM RISK
+                    </div>
+</div>
+<div class="mt-8">
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+<strong class="text-on-surface">Verdict:</strong> This communication contains elements typical of marketing pressure but exhibits suspicious redirection patterns. Proceed with caution.
+                    </p>
+</div>
+</div>
+<!-- AI Forensic Analysis -->
+<div class="md:col-span-8 bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant p-md relative overflow-hidden">
+<div class="flex items-center gap-2 mb-6">
+<span class="material-symbols-outlined text-primary" data-icon="psychology">psychology</span>
+<h3 class="font-h3 text-h3">AI Forensic Analysis</h3>
+</div>
+<div class="grid md:grid-cols-2 gap-6">
+<div class="space-y-4">
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+                            Our neural engine detected <span class="text-primary font-semibold">semantic inconsistencies</span> between the sender's stated identity and the embedded link metadata. While the SSL certificate is valid, the domain age is less than 30 days.
+                        </p>
+<div class="p-sm bg-surface-container-low rounded-lg border-l-4 border-primary">
+<p class="font-body-sm text-body-sm italic text-on-surface-variant">
+                                "The combination of high-urgency language and double-obfuscated URL shorteners suggests a sophisticated data harvesting attempt."
+                            </p>
+</div>
+</div>
+<div class="flex flex-col justify-center items-center bg-primary-container/10 rounded-xl p-md">
+<div class="text-center">
+<div class="text-primary font-bold text-h2 mb-1">92%</div>
+<div class="text-label-sm font-label-sm text-on-surface-variant uppercase tracking-widest">Confidence Score</div>
+</div>
+<div class="w-full mt-6 h-2 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-primary" style="width: 92%"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Risk Breakdown Sidebar (Asymmetric part) -->
+<div class="md:col-span-3 space-y-gutter">
+<div class="bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant p-md">
+<h3 class="font-label-md text-label-md text-on-surface-variant mb-6 uppercase">Risk Breakdown</h3>
+<div class="space-y-4">
+<div>
+<div class="flex justify-between text-label-sm mb-1">
+<span>Domain Credibility</span>
+<span class="font-bold">20%</span>
+</div>
+<div class="h-1.5 w-full bg-surface-container rounded-full">
+<div class="h-full bg-error rounded-full" style="width: 20%"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-label-sm mb-1">
+<span>Link Integrity</span>
+<span class="font-bold">65%</span>
+</div>
+<div class="h-1.5 w-full bg-surface-container rounded-full">
+<div class="h-full bg-tertiary rounded-full" style="width: 65%"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-label-sm mb-1">
+<span>Content Urgency</span>
+<span class="font-bold">85%</span>
+</div>
+<div class="h-1.5 w-full bg-surface-container rounded-full">
+<div class="h-full bg-primary rounded-full" style="width: 85%"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant p-md">
+<h3 class="font-label-md text-label-md text-on-surface-variant mb-4 uppercase">Recommended Actions</h3>
+<ul class="space-y-3">
+<li class="flex gap-3 items-start">
+<span class="material-symbols-outlined text-primary text-[20px]" data-icon="check_circle">check_circle</span>
+<span class="text-body-sm">Do not click extracted links</span>
+</li>
+<li class="flex gap-3 items-start">
+<span class="material-symbols-outlined text-primary text-[20px]" data-icon="check_circle">check_circle</span>
+<span class="text-body-sm">Mark as 'Suspicious' in CRM</span>
+</li>
+<li class="flex gap-3 items-start">
+<span class="material-symbols-outlined text-primary text-[20px]" data-icon="check_circle">check_circle</span>
+<span class="text-body-sm">Verify sender via phone</span>
+</li>
+<li class="flex gap-3 items-start text-outline">
+<span class="material-symbols-outlined text-[20px]" data-icon="radio_button_unchecked">radio_button_unchecked</span>
+<span class="text-body-sm line-through">Report to IT Security</span>
+</li>
+</ul>
+</div>
+</div>
+<!-- Main Results / Findings -->
+<div class="md:col-span-9 space-y-gutter">
+<!-- Findings Pills -->
+<div class="bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant p-md">
+<h3 class="font-h3 text-h3 mb-6">Detailed Findings</h3>
+<div class="flex flex-wrap gap-3">
+<div class="flex items-center gap-2 px-4 py-3 bg-error-container text-on-error-container rounded-lg border border-error/10">
+<span class="material-symbols-outlined" data-icon="link_off">link_off</span>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md leading-tight">Tracking Redirect</span>
+<span class="text-[11px] opacity-75">3 hops detected</span>
+</div>
+</div>
+<div class="flex items-center gap-2 px-4 py-3 bg-tertiary-fixed text-on-tertiary-fixed rounded-lg border border-tertiary/10">
+<span class="material-symbols-outlined" data-icon="bolt">bolt</span>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md leading-tight">Promotional Pressure</span>
+<span class="text-[11px] opacity-75">Urgent language detected</span>
+</div>
+</div>
+<div class="flex items-center gap-2 px-4 py-3 bg-secondary-container text-on-secondary-container rounded-lg border border-secondary/10">
+<span class="material-symbols-outlined" data-icon="shield_moon">shield_moon</span>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md leading-tight">Graylisted IP</span>
+<span class="text-[11px] opacity-75">Originating in Frankfurt</span>
+</div>
+</div>
+<div class="flex items-center gap-2 px-4 py-3 bg-surface-container-high text-on-surface-variant rounded-lg border border-outline-variant">
+<span class="material-symbols-outlined" data-icon="alternate_email">alternate_email</span>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md leading-tight">Spoofing Check</span>
+<span class="text-[11px] opacity-75">SPF/DKIM Passed</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Extracted Links Table -->
+<div class="bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant overflow-hidden">
+<div class="p-md border-b border-outline-variant">
+<h3 class="font-h3 text-h3">Extracted Links</h3>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low text-on-surface-variant font-label-md text-label-md">
+<th class="px-6 py-4">Original URL Fragment</th>
+<th class="px-6 py-4">Resolved Destination</th>
+<th class="px-6 py-4">Assessment</th>
+<th class="px-6 py-4 text-right">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<tr class="hover:bg-blue-50/30 transition-colors">
+<td class="px-6 py-4 text-body-sm font-mono text-primary">/click?id=a82j...</td>
+<td class="px-6 py-4 text-body-sm text-on-surface">marketing-hub.net/redirect/772...</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 bg-error-container text-on-error-container rounded text-[11px] font-bold">
+<span class="material-symbols-outlined text-[14px]" data-icon="dangerous">dangerous</span> MALICIOUS
+                                        </span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-primary hover:underline text-label-sm font-label-sm">Sandbox</button>
+</td>
+</tr>
+<tr class="hover:bg-blue-50/30 transition-colors">
+<td class="px-6 py-4 text-body-sm font-mono text-primary">app.legit-svc.com...</td>
+<td class="px-6 py-4 text-body-sm text-on-surface">app.legit-svc.com/dashboard</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 bg-emerald-100 text-emerald-800 rounded text-[11px] font-bold">
+<span class="material-symbols-outlined text-[14px]" data-icon="check_circle">check_circle</span> SAFE
+                                        </span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-primary hover:underline text-label-sm font-label-sm">Sandbox</button>
+</td>
+</tr>
+<tr class="hover:bg-blue-50/30 transition-colors">
+<td class="px-6 py-4 text-body-sm font-mono text-primary">t.co/Xz92kL...</td>
+<td class="px-6 py-4 text-body-sm text-on-surface">unresolved.external-tracker.ru</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 bg-tertiary-fixed text-on-tertiary-fixed rounded text-[11px] font-bold">
+<span class="material-symbols-outlined text-[14px]" data-icon="help">help</span> UNKNOWN
+                                        </span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-primary hover:underline text-label-sm font-label-sm">Sandbox</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-slate-50 border-t border-slate-200 mt-20">
+<div class="py-12 px-6 md:px-12 max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4 font-['Inter'] text-sm">
+<div class="flex flex-col gap-2">
+<div class="text-lg font-bold text-slate-900">PhishGuard</div>
+<p class="text-slate-500">© 2024 PhishGuard Intelligence. All rights reserved.</p>
+</div>
+<div class="flex flex-wrap justify-center gap-6">
+<a class="text-slate-500 hover:text-slate-900 transition-colors duration-200" href="#">Privacy Policy</a>
+<a class="text-slate-500 hover:text-slate-900 transition-colors duration-200" href="#">Terms of Service</a>
+<a class="text-slate-500 hover:text-slate-900 transition-colors duration-200" href="#">Security Disclosure</a>
+<a class="text-slate-500 hover:text-slate-900 transition-colors duration-200" href="#">Contact Support</a>
+</div>
+</div>
+</footer>
+</body></html>

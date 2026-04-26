@@ -5,78 +5,84 @@ interface ExtractedLinksProps {
   links: ExtractedLink[];
 }
 
-function getRiskBadgeClasses(riskLabel: ExtractedLink["riskLabel"]): string {
+function getRiskBadgeConfig(riskLabel: ExtractedLink["riskLabel"]) {
   if (riskLabel === "malicious") {
-    return "text-red-400 bg-red-500/10 border-red-500/30";
+    return {
+      classes: "bg-error/10 text-error border-error/20",
+      icon: "warning"
+    };
   }
 
   if (riskLabel === "suspicious") {
-    return "text-amber-400 bg-amber-500/10 border-amber-500/30";
+    return {
+      classes: "bg-tertiary/10 text-tertiary border-tertiary/20",
+      icon: "error_outline"
+    };
   }
 
-  return "text-emerald-400 bg-emerald-500/10 border-emerald-500/30";
+  return {
+    classes: "bg-surface-container-high text-on-surface-variant border-outline-variant",
+    icon: "check_circle"
+  };
 }
 
 export default function ExtractedLinks({ links }: ExtractedLinksProps) {
   return (
-    <section className="bg-gray-900 border border-gray-800 rounded-xl p-6">
-      <div className="mb-4 flex items-center justify-between gap-4">
-        <h2 className="text-sm font-medium text-gray-400 uppercase tracking-wider">
-          Extracted links
-        </h2>
-        <span className="bg-gray-800 text-gray-400 text-xs px-3 py-1 rounded-full">
+    <div className="bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant overflow-hidden">
+      <div className="p-md border-b border-outline-variant flex items-center justify-between">
+        <h3 className="font-h3 text-h3 text-on-surface">Extracted Links</h3>
+        <span className="bg-surface-container text-on-surface-variant font-label-sm px-3 py-1 rounded-full">
           {links.length}
         </span>
       </div>
 
       {links.length === 0 ? (
-        <div className="rounded-lg border border-gray-800 bg-gray-800 p-4 text-sm text-gray-400">
+        <div className="p-4 text-body-sm text-on-surface-variant">
           No links detected in this input
         </div>
       ) : (
         <div className="overflow-x-auto">
-          <table className="w-full min-w-full text-left text-sm">
-            <thead className="border-b border-gray-800 text-xs uppercase tracking-wider text-gray-500">
-              <tr>
-                <th scope="col" className="pb-3 pr-4 font-medium">
-                  URL
-                </th>
-                <th scope="col" className="pb-3 pr-4 font-medium">
-                  Resolved
-                </th>
-                <th scope="col" className="pb-3 pr-4 font-medium">
-                  Risk
-                </th>
-                <th scope="col" className="pb-3 font-medium">
-                  Reason
-                </th>
+          <table className="w-full text-left border-collapse">
+            <thead>
+              <tr className="bg-surface-container-low border-b border-outline-variant">
+                <th className="py-3 px-md font-label-md text-label-md text-on-surface-variant uppercase">Original URL</th>
+                <th className="py-3 px-md font-label-md text-label-md text-on-surface-variant uppercase">Resolved Target</th>
+                <th className="py-3 px-md font-label-md text-label-md text-on-surface-variant uppercase">Risk Analysis</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-800">
-              {links.map((link) => (
-                <tr key={link.id}>
-                  <td className="py-4 pr-4 align-top">
-                    <span className="font-mono text-xs text-gray-300" title={link.original}>
-                      {truncateUrl(link.original, 40)}
-                    </span>
-                  </td>
-                  <td className="py-4 pr-4 align-top">
-                    <span className="font-mono text-xs text-gray-400" title={link.resolved ?? "No resolved URL"}>
-                      {link.resolved ? truncateUrl(link.resolved, 40) : "Not resolved"}
-                    </span>
-                  </td>
-                  <td className="py-4 pr-4 align-top">
-                    <span className={`inline-flex rounded-full border px-2 py-0.5 text-xs uppercase ${getRiskBadgeClasses(link.riskLabel)}`}>
-                      {link.riskLabel}
-                    </span>
-                  </td>
-                  <td className="py-4 align-top text-sm text-gray-400">{link.reason}</td>
-                </tr>
-              ))}
+            <tbody>
+              {links.map((link) => {
+                const badgeConfig = getRiskBadgeConfig(link.riskLabel);
+                return (
+                  <tr key={link.id} className="border-b border-outline-variant/50 hover:bg-surface-container-low transition-colors">
+                    <td className="py-4 px-md align-top">
+                      <div className="font-mono text-body-sm text-on-surface truncate max-w-[200px]" title={link.original}>
+                        {truncateUrl(link.original, 40)}
+                      </div>
+                    </td>
+                    <td className="py-4 px-md align-top">
+                      <div className={`font-mono text-body-sm truncate max-w-[200px] ${link.riskLabel === 'malicious' ? 'text-error' : 'text-on-surface-variant'}`} title={link.resolved ?? "No resolved URL"}>
+                        {link.resolved ? truncateUrl(link.resolved, 40) : "Not resolved"}
+                      </div>
+                    </td>
+                    <td className="py-4 px-md align-top">
+                      <div className="flex flex-col gap-2">
+                        <div className="flex items-center gap-2">
+                          <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full font-label-sm border ${badgeConfig.classes}`}>
+                            <span className="material-symbols-outlined text-[14px]" aria-hidden="true">{badgeConfig.icon}</span>
+                            <span className="uppercase">{link.riskLabel}</span>
+                          </span>
+                        </div>
+                        <span className="text-body-sm text-on-surface-variant">{link.reason}</span>
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>
       )}
-    </section>
+    </div>
   );
 }

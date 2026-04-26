@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import type { AnalysisResult } from "@/lib/types";
-import { getRiskBannerClasses, getRiskColor } from "@/lib/utils";
 
 interface RiskScoreBannerProps {
   result: AnalysisResult;
@@ -10,19 +9,47 @@ interface RiskScoreBannerProps {
 
 function getVerdict(riskLevel: AnalysisResult["riskLevel"]): string {
   if (riskLevel === "HIGH") {
-    return "This email shows strong indicators of a phishing attack";
+    return "This email shows strong indicators of a phishing attack. Do not engage.";
   }
 
   if (riskLevel === "MEDIUM") {
-    return "This input contains suspicious signals that deserve review";
+    return "This communication contains elements typical of marketing pressure but exhibits suspicious redirection patterns. Proceed with caution.";
   }
 
-  return "This input appears low risk based on the detected signals";
+  return "This input appears low risk based on the detected signals. Safe to proceed.";
+}
+
+function getRiskColorConfig(riskLevel: string) {
+  if (riskLevel === "HIGH") {
+    return {
+      text: "text-error",
+      bgShape: "bg-error/10",
+      pillBg: "bg-error-container",
+      pillText: "text-on-error-container",
+      icon: "dangerous"
+    };
+  }
+  if (riskLevel === "MEDIUM") {
+    return {
+      text: "text-tertiary",
+      bgShape: "bg-tertiary/10",
+      pillBg: "bg-tertiary-fixed",
+      pillText: "text-on-tertiary-fixed",
+      icon: "warning"
+    };
+  }
+  return {
+    text: "text-primary",
+    bgShape: "bg-primary/10",
+    pillBg: "bg-primary-fixed",
+    pillText: "text-on-primary-fixed",
+    icon: "check_circle"
+  };
 }
 
 export default function RiskScoreBanner({ result }: RiskScoreBannerProps) {
   const [displayScore, setDisplayScore] = useState(0);
-  const riskColor = getRiskColor(result.riskLevel);
+  const config = getRiskColorConfig(result.riskLevel);
 
   useEffect(() => {
     let frame = 0;
@@ -50,35 +77,24 @@ export default function RiskScoreBanner({ result }: RiskScoreBannerProps) {
   }, [result.score]);
 
   return (
-    <section
-      className={`bg-gray-900 border border-gray-800 rounded-xl p-6 ${getRiskBannerClasses(result.riskLevel)}`}
-      aria-label={`Risk score ${result.score} out of 100, ${result.riskLevel}`}
-    >
-      <div className="grid grid-cols-1 items-center gap-6 md:grid-cols-3">
-        <div>
-          <p className="text-sm font-medium text-gray-400 uppercase tracking-wider">
-            Risk level
-          </p>
-          <p className={`mt-2 text-4xl font-bold ${riskColor}`}>{result.riskLevel}</p>
+    <div className="md:col-span-4 bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant p-md flex flex-col justify-between overflow-hidden relative">
+      <div className={`absolute top-0 right-0 w-32 h-32 rounded-full -mr-16 -mt-16 ${config.bgShape}`}></div>
+      <div>
+        <h3 className="font-label-md text-label-md text-on-surface-variant uppercase mb-4">Risk Level</h3>
+        <div className="flex items-baseline gap-2 mb-2">
+          <span className={`text-[56px] font-bold leading-none ${config.text}`}>{displayScore}</span>
+          <span className="text-h3 font-h3 text-outline">/100</span>
         </div>
-
-        <div className="text-left md:text-center">
-          <p className="text-sm font-medium text-gray-400 uppercase tracking-wider">
-            Score
-          </p>
-          <p className="mt-2 text-7xl font-bold text-gray-100">
-            {displayScore}
-            <span className="text-2xl text-gray-500">/100</span>
-          </p>
-        </div>
-
-        <div>
-          <p className="text-sm font-medium text-gray-400 uppercase tracking-wider">
-            Verdict
-          </p>
-          <p className="mt-2 text-sm text-gray-300 leading-relaxed">{getVerdict(result.riskLevel)}</p>
+        <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full font-label-md ${config.pillBg} ${config.pillText}`}>
+          <span className="material-symbols-outlined text-[18px]" style={{ fontVariationSettings: "'FILL' 1" }} aria-hidden="true">{config.icon}</span>
+          {result.riskLevel} RISK
         </div>
       </div>
-    </section>
+      <div className="mt-8">
+        <p className="font-body-sm text-body-sm text-on-surface-variant">
+          <strong className="text-on-surface">Verdict:</strong> {getVerdict(result.riskLevel)}
+        </p>
+      </div>
+    </div>
   );
 }

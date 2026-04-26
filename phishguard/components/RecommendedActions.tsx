@@ -1,23 +1,19 @@
-import { Square } from "lucide-react";
-
 interface RecommendedActionsProps {
   actions: string[];
 }
 
 export default function RecommendedActions({ actions }: RecommendedActionsProps) {
   return (
-    <section className="bg-gray-900 border border-gray-800 rounded-xl p-6">
-      <h2 className="mb-4 text-sm font-medium text-gray-400 uppercase tracking-wider">
-        Recommended actions
-      </h2>
-      <div className="flex flex-col gap-3">
+    <div className="bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant p-md">
+      <h3 className="font-label-md text-label-md text-on-surface-variant mb-4 uppercase">Recommended Actions</h3>
+      <ul className="space-y-3">
         {actions.slice(0, 5).map((action) => (
-          <div key={action} className="flex items-start gap-3">
-            <Square className="mt-0.5 h-4 w-4 flex-none text-cyan-400" aria-hidden="true" />
-            <p className="text-gray-300 text-sm leading-relaxed">{action}</p>
-          </div>
+          <li key={action} className="flex gap-3 items-start">
+            <span className="material-symbols-outlined text-primary text-[20px]" aria-hidden="true">check_circle</span>
+            <span className="text-body-sm">{action}</span>
+          </li>
         ))}
-      </div>
-    </section>
+      </ul>
+    </div>
   );
 }

@@ -1,5 +1,4 @@
 import type { Finding } from "@/lib/types";
-import { getSeverityColor } from "@/lib/utils";
 
 interface FindingsCardProps {
   findings: Finding[];
@@ -11,16 +10,25 @@ const severityOrder: Record<Finding["severity"], number> = {
   info: 2,
 };
 
-function getDotClass(severity: Finding["severity"]): string {
+function getSeverityConfig(severity: Finding["severity"]) {
   if (severity === "critical") {
-    return "bg-red-500";
+    return {
+      pillClasses: "bg-error/10 text-error border-error/20",
+      icon: "warning"
+    };
   }
 
   if (severity === "warning") {
-    return "bg-amber-500";
+    return {
+      pillClasses: "bg-tertiary/10 text-tertiary border-tertiary/20",
+      icon: "error_outline"
+    };
   }
 
-  return "bg-cyan-500";
+  return {
+    pillClasses: "bg-surface-container-high text-on-surface-variant border-outline-variant",
+    icon: "info"
+  };
 }
 
 export default function FindingsCard({ findings }: FindingsCardProps) {
@@ -29,48 +37,46 @@ export default function FindingsCard({ findings }: FindingsCardProps) {
   );
 
   return (
-    <section className="bg-gray-900 border border-gray-800 rounded-xl p-6">
-      <div className="mb-4 flex items-center justify-between gap-4">
-        <h2 className="text-sm font-medium text-gray-400 uppercase tracking-wider">
-          Findings
-        </h2>
-        <span className="bg-gray-800 text-gray-400 text-xs px-3 py-1 rounded-full">
+    <div className="bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant p-md">
+      <div className="mb-6 flex items-center justify-between gap-4">
+        <h3 className="font-h3 text-h3 text-on-surface">
+          Detailed Findings
+        </h3>
+        <span className="bg-surface-container text-on-surface-variant font-label-sm px-3 py-1 rounded-full">
           {findings.length}
         </span>
       </div>
 
       {sortedFindings.length === 0 ? (
-        <div className="rounded-lg border border-gray-800 bg-gray-800 p-4 text-sm text-gray-400">
+        <div className="rounded-lg border border-outline-variant bg-surface-container-low p-4 text-body-sm text-on-surface-variant">
           No forensic findings were detected in this input.
         </div>
       ) : (
-        <div className="divide-y divide-gray-800">
-          {sortedFindings.map((finding) => (
-            <div key={finding.id} className="flex flex-col gap-3 py-4 first:pt-0 last:pb-0 sm:flex-row sm:items-start">
-              <div className="flex items-center gap-2 sm:pt-1">
-                <span
-                  className={`h-2.5 w-2.5 rounded-full ${getDotClass(finding.severity)}`}
-                  aria-hidden="true"
-                />
-                <span className={`text-xs uppercase ${getSeverityColor(finding.severity)}`}>
-                  {finding.severity}
-                </span>
-              </div>
+        <div className="flex flex-col gap-4">
+          {sortedFindings.map((finding) => {
+            const config = getSeverityConfig(finding.severity);
+            return (
+              <div key={finding.id} className="flex flex-col gap-2 p-4 rounded-lg bg-surface-container-lowest border border-outline-variant/50 hover:border-outline transition-colors sm:flex-row sm:items-start">
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border font-label-sm ${config.pillClasses}`}>
+                      <span className="material-symbols-outlined text-[14px]" aria-hidden="true">{config.icon}</span>
+                      {finding.category}
+                    </span>
+                  </div>
+                  <p className="mt-1 text-body-sm text-on-surface-variant leading-relaxed">{finding.detail}</p>
+                </div>
 
-              <div className="min-w-0 flex-1">
-                <p className="font-medium text-gray-100">{finding.category}</p>
-                <p className="mt-1 text-sm text-gray-400 leading-relaxed">{finding.detail}</p>
+                {finding.snippet ? (
+                  <span className="max-w-full self-start truncate font-mono text-xs bg-surface-container px-2 py-1 rounded text-on-surface-variant border border-outline-variant/30" title={finding.snippet}>
+                    {finding.snippet}
+                  </span>
+                ) : null}
               </div>
-
-              {finding.snippet ? (
-                <span className="max-w-full self-start truncate font-mono text-xs bg-gray-800 px-2 py-0.5 rounded text-gray-300" title={finding.snippet}>
-                  {finding.snippet}
-                </span>
-              ) : null}
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
-    </section>
+    </div>
   );
 }

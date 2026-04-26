@@ -140,43 +140,43 @@ export default function InputPanel({ input, onInputChange, demoResult }: InputPa
   }
 
   return (
-    <div className="bg-gray-900 border border-gray-800 rounded-xl p-6 w-full">
+    <div className="max-w-4xl mx-auto w-full bg-surface-container-lowest p-gutter rounded-xl shadow-xl border border-outline-variant/30 mb-8">
       {isLoading ? <ScanningLoader /> : null}
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <div>
+      <form onSubmit={handleSubmit}>
+        <div className="relative">
           <label htmlFor="phish-input" className="sr-only">
             Suspicious email or URL
           </label>
           <textarea
             id="phish-input"
-            rows={6}
             value={input}
             maxLength={MAX_INPUT_LENGTH}
             onChange={(event) => onInputChange(event.target.value.slice(0, MAX_INPUT_LENGTH))}
-            placeholder="Paste a suspicious email or URL here..."
+            placeholder="Paste suspicious URL, email headers, or message content here..."
             aria-label="Paste a suspicious email or URL here"
-            className="bg-gray-800 border border-gray-700 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 text-gray-100 rounded-lg px-4 py-3 outline-none transition-all w-full resize-y text-sm"
+            className="w-full min-h-[200px] p-6 pb-20 font-body-md text-body-md bg-surface-container-low border-outline border focus:border-primary focus:ring-1 focus:ring-primary rounded-lg transition-all resize-none outline-none text-on-surface"
           />
-          <div className="mt-2 text-right text-gray-500 text-xs">
+          <div className="absolute bottom-4 left-6 text-on-surface-variant text-xs">
             {input.length.toLocaleString()} / {MAX_INPUT_LENGTH.toLocaleString()} characters
           </div>
+          
+          <div className="absolute bottom-4 right-4 flex items-center gap-3">
+            {error ? (
+              <p className="text-error text-sm font-medium mr-2" role="alert">
+                {error}
+              </p>
+            ) : null}
+            <button
+              type="submit"
+              disabled={isSubmitDisabled}
+              aria-label="Analyze for threats"
+              className="bg-primary text-on-primary font-label-md text-label-md px-6 h-[44px] rounded-lg flex items-center gap-2 shadow-sm hover:opacity-90 active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <span className="material-symbols-outlined">shield_with_heart</span>
+              {isLoading ? "Analyzing..." : isCoolingDown ? "Cooling down..." : "Analyze for threats"}
+            </button>
+          </div>
         </div>
-
-        {error ? (
-          <p className="text-red-400 text-sm" role="alert">
-            {error}
-          </p>
-        ) : null}
-
-        <button
-          type="submit"
-          disabled={isSubmitDisabled}
-          aria-label="Analyze for threats"
-          className="bg-cyan-500 hover:bg-cyan-400 text-gray-950 font-medium px-6 py-2.5 rounded-lg transition-colors w-full disabled:cursor-not-allowed disabled:opacity-50 flex items-center justify-center gap-2"
-        >
-          <Search className="h-4 w-4" aria-hidden="true" />
-          {isLoading ? "Analyzing..." : isCoolingDown ? "Cooling down..." : "Analyze for threats"}
-        </button>
       </form>
     </div>
   );

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-background": "#191c21",
+                    "on-secondary-fixed": "#011d35",
+                    "surface-container": "#ecedf5",
+                    "error": "#ba1a1a",
+                    "secondary-fixed-dim": "#b0c9e8",
+                    "tertiary-container": "#a06900",
+                    "inverse-surface": "#2e3036",
+                    "outline": "#717783",
+                    "tertiary-fixed": "#ffddb4",
+                    "inverse-on-surface": "#eff0f8",
+                    "on-error": "#ffffff",
+                    "tertiary-fixed-dim": "#ffb953",
+                    "on-primary-fixed": "#001c39",
+                    "surface": "#f8f9ff",
+                    "on-primary-container": "#fdfcff",
+                    "on-error-container": "#93000a",
+                    "outline-variant": "#c1c7d3",
+                    "on-secondary": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "primary-fixed": "#d4e3ff",
+                    "on-secondary-container": "#4b637e",
+                    "on-tertiary-fixed": "#291800",
+                    "surface-dim": "#d8dae1",
+                    "secondary": "#49607c",
+                    "on-tertiary-container": "#fffbff",
+                    "tertiary": "#7f5300",
+                    "background": "#f8f9ff",
+                    "primary-fixed-dim": "#a4c9ff",
+                    "surface-container-highest": "#e1e2e9",
+                    "surface-variant": "#e1e2e9",
+                    "secondary-container": "#c7dfff",
+                    "on-primary-fixed-variant": "#004883",
+                    "primary-container": "#2976c7",
+                    "surface-container-high": "#e6e8ef",
+                    "on-tertiary": "#ffffff",
+                    "on-secondary-fixed-variant": "#314863",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-container-low": "#f2f3fb",
+                    "on-surface-variant": "#414751",
+                    "secondary-fixed": "#d1e4ff",
+                    "on-tertiary-fixed-variant": "#633f00",
+                    "on-surface": "#191c21",
+                    "inverse-primary": "#a4c9ff",
+                    "surface-bright": "#f8f9ff",
+                    "on-primary": "#ffffff",
+                    "surface-tint": "#0060ac",
+                    "primary": "#005da7"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "sm": "16px",
+                    "md": "24px",
+                    "margin": "32px",
+                    "xl": "64px",
+                    "base": "4px",
+                    "xs": "8px",
+                    "gutter": "24px",
+                    "lg": "40px"
+            },
+            "fontFamily": {
+                    "body-md": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "label-md": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "h1": ["Inter"],
+                    "h3": ["Inter"],
+                    "h2": ["Inter"],
+                    "body-sm": ["Inter"]
+            },
+            "fontSize": {
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "label-md": ["14px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "h1": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "h3": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "h2": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    </style>
+</head>
+<body class="bg-background text-on-background antialiased overflow-x-hidden">
+<!-- TopNavBar -->
+<nav class="fixed top-0 z-50 w-full bg-white/80 dark:bg-slate-900/80 backdrop-blur-md shadow-sm border-b border-slate-200 dark:border-slate-800 font-['Inter'] antialiased tracking-tight">
+<div class="flex justify-between items-center h-16 w-full px-6 md:px-12 max-w-7xl mx-auto">
+<div class="text-2xl font-extrabold tracking-tighter text-blue-600 dark:text-blue-400">PhishGuard</div>
+<div class="hidden md:flex items-center gap-8">
+<a class="text-blue-600 dark:text-blue-400 font-semibold border-b-2 border-blue-600 dark:border-blue-400 pb-1 hover:text-blue-500 transition-colors duration-200" href="#">Home</a>
+<a class="text-slate-600 dark:text-slate-400 font-medium hover:text-blue-500 transition-colors duration-200" href="#">Scanner</a>
+<a class="text-slate-600 dark:text-slate-400 font-medium hover:text-blue-500 transition-colors duration-200" href="#">Dashboard</a>
+<a class="text-slate-600 dark:text-slate-400 font-medium hover:text-blue-500 transition-colors duration-200" href="#">Documentation</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="hidden sm:block text-slate-600 dark:text-slate-400 font-medium hover:text-slate-900 active:opacity-80 transition-all duration-100">Sign In</button>
+<button class="bg-blue-600 text-white px-5 py-2.5 rounded-lg font-semibold shadow-sm hover:bg-blue-700 active:opacity-80 transition-all duration-100">Analyze Now</button>
+</div>
+</div>
+</nav>
+<main class="pt-32 pb-20">
+<!-- Hero Section -->
+<section class="max-w-7xl mx-auto px-6 md:px-12 text-center">
+<div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-secondary-container text-on-secondary-container font-label-md text-label-md mb-8">
+<span class="material-symbols-outlined text-[18px]">verified_user</span>
+                AI-Powered Threat Intelligence
+            </div>
+<h1 class="font-h1 text-h1 text-on-background max-w-3xl mx-auto mb-6">
+                Detect Phishing. Before it's too late.
+            </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto mb-12">
+                Unmask malicious links, fraudulent emails, and deceptive sites with our enterprise-grade security engine. Zero-day protection for your digital life.
+            </p>
+<!-- Analysis Tool -->
+<div class="max-w-4xl mx-auto bg-surface-container-lowest p-gutter rounded-xl shadow-xl border border-outline-variant/30">
+<div class="relative">
+<textarea class="w-full min-h-[200px] p-6 font-body-md text-body-md bg-surface-container-low border-outline border focus:border-primary focus:ring-1 focus:ring-primary rounded-lg transition-all resize-none outline-none text-on-surface" placeholder="Paste suspicious URL, email headers, or message content here..."></textarea>
+<div class="absolute bottom-4 right-4 flex gap-3">
+<button class="bg-primary text-on-primary font-label-md text-label-md px-xl h-[44px] rounded-lg flex items-center gap-2 shadow-sm hover:opacity-90 active:scale-95 transition-all">
+<span class="material-symbols-outlined">shield_with_heart</span>
+                            Analyze for threats
+                        </button>
+</div>
+</div>
+</div>
+<!-- Demo Samples -->
+<div class="mt-xl max-w-4xl mx-auto">
+<div class="flex items-center justify-between mb-gutter">
+<h3 class="font-h3 text-h3 text-on-surface">Try a sample analysis</h3>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Click to auto-fill</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<button class="group p-md bg-surface-container-lowest border border-outline-variant/40 rounded-lg text-left hover:border-primary transition-all hover:shadow-md">
+<div class="flex items-center gap-2 mb-xs text-tertiary">
+<span class="material-symbols-outlined text-[20px]">mail</span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider">Fake Banking</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2">"Your account access has been restricted. Click here to verify..."</p>
+</button>
+<button class="group p-md bg-surface-container-lowest border border-outline-variant/40 rounded-lg text-left hover:border-primary transition-all hover:shadow-md">
+<div class="flex items-center gap-2 mb-xs text-secondary">
+<span class="material-symbols-outlined text-[20px]">link</span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider">URL Squatting</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2">https://auth.microsoft-security-verify.net/login?id=4821</p>
+</button>
+<button class="group p-md bg-surface-container-lowest border border-outline-variant/40 rounded-lg text-left hover:border-primary transition-all hover:shadow-md">
+<div class="flex items-center gap-2 mb-xs text-primary">
+<span class="material-symbols-outlined text-[20px]">work</span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider">Social Engineering</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2">"Attached is the updated Q4 payroll spreadsheet for review."</p>
+</button>
+</div>
+</div>
+</section>
+<!-- Stats Bento Grid Section -->
+<section class="max-w-7xl mx-auto px-6 md:px-12 mt-40">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter h-auto md:h-[500px]">
+<div class="md:col-span-8 bg-primary-container text-on-primary-container p-xl rounded-xl relative overflow-hidden flex flex-col justify-end">
+<img class="absolute top-0 right-0 w-1/2 h-full object-cover mix-blend-overlay opacity-30" data-alt="Cybersecurity digital blue code abstract background representing high-tech security and data protection" src="https://lh3.googleusercontent.com/aida-public/AB6AXuANKfsnaiqnAMtTNwRKleSGukH2dMUjkj1wN0pLIP0tssMmkfKeWWBRFQLNIbnWQ6BOVf4ILQNuEqU_drBZaj27QxaN3hvuEA0B5Mzo12P_12tIN6MWJ2GMyFdgb5Sc_iIYqra8iaRSsWjjGj6JzTgh05R0IxxHm9lSLwB4bTFXL_PoqvDKaxyqkLTkwF28g4dbnQTRunJWHKHG6tXgD9yn4-QqXviTHLZcaisY8ZDY__wafxdJaeYbYwGoh6xOF_NMo5LHRRFZ6uBB"/>
+<h2 class="font-h2 text-h2 mb-4">Enterprise Grade Scanning</h2>
+<p class="font-body-md text-body-md opacity-90 max-w-md">Our neural networks scan millions of signatures daily to identify even the most sophisticated spear-phishing attempts before they reach your inbox.</p>
+</div>
+<div class="md:col-span-4 grid grid-rows-2 gap-gutter">
+<div class="bg-surface-container-high p-md rounded-xl flex flex-col justify-center border border-outline-variant/20">
+<span class="font-h1 text-h1 text-primary mb-2">99.9%</span>
+<p class="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest">Detection Rate</p>
+</div>
+<div class="bg-surface-container-high p-md rounded-xl flex flex-col justify-center border border-outline-variant/20">
+<span class="font-h1 text-h1 text-tertiary mb-2">&lt;2s</span>
+<p class="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest">Analysis Time</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Security Features Section -->
+<section class="max-w-7xl mx-auto px-6 md:px-12 mt-40">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-xl">
+<div class="text-center">
+<div class="w-16 h-16 bg-primary/10 text-primary rounded-full flex items-center justify-center mx-auto mb-6">
+<span class="material-symbols-outlined text-[32px]">biotech</span>
+</div>
+<h3 class="font-h3 text-h3 mb-4">Heuristic Analysis</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Scanning for linguistic patterns and behavioral cues typical of malicious intent.</p>
+</div>
+<div class="text-center">
+<div class="w-16 h-16 bg-tertiary/10 text-tertiary rounded-full flex items-center justify-center mx-auto mb-6">
+<span class="material-symbols-outlined text-[32px]">public</span>
+</div>
+<h3 class="font-h3 text-h3 mb-4">Global Intelligence</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Real-time sync with global threat databases and blocklists across the web.</p>
+</div>
+<div class="text-center">
+<div class="w-16 h-16 bg-secondary/10 text-secondary rounded-full flex items-center justify-center mx-auto mb-6">
+<span class="material-symbols-outlined text-[32px]">terminal</span>
+</div>
+<h3 class="font-h3 text-h3 mb-4">Header Inspections</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Deconstruct email SMTP headers to find hidden spoofing and routing anomalies.</p>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-slate-50 dark:bg-slate-950 font-['Inter'] text-sm border-t border-slate-200 dark:border-slate-800">
+<div class="py-12 px-6 md:px-12 max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+<div class="flex flex-col gap-4">
+<div class="text-lg font-bold text-slate-900 dark:text-white">PhishGuard Intelligence</div>
+<p class="text-slate-500 dark:text-slate-400 max-w-xs">© 2024 PhishGuard Intelligence. All rights reserved.</p>
+</div>
+<div class="flex flex-wrap justify-center gap-6">
+<a class="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors duration-200" href="#">Privacy Policy</a>
+<a class="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors duration-200" href="#">Terms of Service</a>
+<a class="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors duration-200" href="#">Security Disclosure</a>
+<a class="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors duration-200" href="#">Contact Support</a>
+</div>
+<div class="flex gap-4">
+<button class="p-2 text-slate-400 hover:text-blue-600 transition-colors">
+<span class="material-symbols-outlined">share</span>
+</button>
+<button class="p-2 text-slate-400 hover:text-blue-600 transition-colors">
+<span class="material-symbols-outlined">language</span>
+</button>
+</div>
+</div>
+</footer>
+</body></html>
