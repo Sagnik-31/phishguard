@@ -14,9 +14,7 @@ export default function Header() {
           <Link href="/" className="text-primary font-semibold border-b-2 border-primary pb-1 transition-colors duration-200">Dashboard</Link>
         </nav>
         <div className="flex items-center gap-4">
-          <div className="hidden md:block bg-surface-container-high text-on-surface-variant text-xs px-3 py-1 rounded-full">
-            Powered by Gemini
-          </div>
+
           <button className="bg-primary px-6 py-2 rounded-lg text-on-primary font-semibold hover:opacity-90 active:opacity-80 transition-all duration-100">Analyze Now</button>
         </div>
       </div>
