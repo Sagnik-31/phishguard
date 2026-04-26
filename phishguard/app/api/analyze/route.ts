@@ -246,8 +246,14 @@ function isRateLimited() {
   return false;
 }
 
-async function callGroq(input: string): Promise<GroqResponse> {
-  const body = JSON.stringify({
+async function callGroq(input: string, debug: Record<string, unknown>): Promise<GroqResponse> {
+  const apiKey = process.env.GROQ_API_KEY;
+  debug.apiKeyExists = !!apiKey;
+  debug.apiKeyLength = apiKey?.length ?? 0;
+  debug.apiKeyPrefix = apiKey?.slice(0, 7) ?? "MISSING";
+  console.log("[DEBUG] GROQ_API_KEY exists:", !!apiKey, "| length:", apiKey?.length ?? 0);
+
+  const payload = {
     model: GROQ_MODEL,
     messages: [
       { role: "system", content: SYSTEM_PROMPT },
@@ -256,9 +262,17 @@ async function callGroq(input: string): Promise<GroqResponse> {
     temperature: 0,
     max_tokens: 4096,
     response_format: { type: "json_object" },
-  });
+  };
+
+  debug.requestModel = GROQ_MODEL;
+  debug.requestEndpoint = GROQ_ENDPOINT;
+  console.log("[DEBUG] Groq request model:", GROQ_MODEL);
+
+  const body = JSON.stringify(payload);
 
   for (let attempt = 0; attempt <= RETRY_DELAYS_MS.length; attempt += 1) {
+    console.log(`[DEBUG] Groq attempt ${attempt + 1}/${RETRY_DELAYS_MS.length + 1}`);
+
     const response = await fetch(GROQ_ENDPOINT, {
       method: "POST",
       headers: {
@@ -268,21 +282,48 @@ async function callGroq(input: string): Promise<GroqResponse> {
       body,
     });
 
-    const groq = (await response.json()) as GroqResponse;
+    debug.httpStatus = response.status;
+    debug.httpStatusText = response.statusText;
+    console.log("[DEBUG] Groq HTTP status:", response.status, response.statusText);
+
+    const rawText = await response.text();
+    debug.rawResponseLength = rawText.length;
+    debug.rawResponsePreview = rawText.slice(0, 500);
+    console.log("[DEBUG] Groq raw response (first 500 chars):", rawText.slice(0, 500));
+
+    let groq: GroqResponse;
+    try {
+      groq = JSON.parse(rawText) as GroqResponse;
+    } catch (parseErr) {
+      debug.groqJsonParseError = parseErr instanceof Error ? parseErr.message : String(parseErr);
+      console.error("[DEBUG] Failed to parse Groq response as JSON:", parseErr);
+      throw new Error(`Groq returned non-JSON response (status ${response.status}): ${rawText.slice(0, 200)}`);
+    }
 
     if (response.status === 429 && attempt < RETRY_DELAYS_MS.length) {
-      console.warn(`Groq rate limited. Retrying in ${RETRY_DELAYS_MS[attempt]}ms.`);
+      const retryMsg = groq.error?.message ?? "rate limited";
+      debug.rateLimitMessage = retryMsg;
+      console.warn(`[DEBUG] Groq rate limited (attempt ${attempt + 1}): ${retryMsg}. Retrying in ${RETRY_DELAYS_MS[attempt]}ms.`);
       await sleep(RETRY_DELAYS_MS[attempt]);
       continue;
     }
 
     if (!response.ok) {
-      throw new Error(groq.error?.message ?? `Groq request failed with status ${response.status}.`);
+      const errorMsg = groq.error?.message ?? `Groq request failed with status ${response.status}.`;
+      debug.groqError = errorMsg;
+      console.error("[DEBUG] Groq API error:", errorMsg);
+      throw new Error(errorMsg);
     }
+
+    debug.groqSuccess = true;
+    debug.choicesCount = groq.choices?.length ?? 0;
+    debug.contentLength = groq.choices?.[0]?.message?.content?.length ?? 0;
+    console.log("[DEBUG] Groq success. Choices:", groq.choices?.length ?? 0, "| Content length:", groq.choices?.[0]?.message?.content?.length ?? 0);
 
     return groq;
   }
 
+  debug.exhaustedRetries = true;
   throw new Error("Groq rate limit exceeded after retries.");
 }
 
@@ -297,29 +338,64 @@ export async function OPTIONS() {
 }
 
 export async function POST(request: Request) {
+  const debug: Record<string, unknown> = { timestamp: new Date().toISOString() };
+
   try {
     const body = (await request.json()) as { input?: unknown };
     const input = typeof body.input === "string" ? body.input.trim().slice(0, MAX_INPUT_LENGTH) : "";
 
+    debug.inputLength = input.length;
+    debug.inputPreview = input.slice(0, 100);
+    console.log("[DEBUG] POST /api/analyze | input length:", input.length, "| preview:", input.slice(0, 100));
+
     if (input.length < 10) {
-      return NextResponse.json({ error: "Input must be at least 10 characters." }, { status: 400, headers: CORS_HEADERS });
+      debug.rejected = "input too short";
+      return NextResponse.json({ error: "Input must be at least 10 characters.", debug }, { status: 400, headers: CORS_HEADERS });
     }
 
     if (isRateLimited()) {
-      console.warn("PhishGuard API rate limit hit. Returning fallback result.");
-      return NextResponse.json(getFallbackResult(), { status: 200, headers: CORS_HEADERS });
+      debug.rejected = "internal rate limit";
+      console.warn("[DEBUG] Internal rate limit hit.");
+      return NextResponse.json({ ...getFallbackResult(), debug }, { status: 200, headers: CORS_HEADERS });
     }
 
-    const groq = await callGroq(input);
+    const groq = await callGroq(input, debug);
     const text = groq.choices?.[0]?.message?.content?.trim();
 
+    debug.extractedTextLength = text?.length ?? 0;
+    debug.extractedTextPreview = text?.slice(0, 300) ?? "EMPTY";
+    console.log("[DEBUG] Extracted text (first 300 chars):", text?.slice(0, 300) ?? "EMPTY");
+
     if (!text) {
+      debug.failReason = "empty text response";
       throw new Error("Groq did not return a text response.");
     }
 
-    return NextResponse.json(normalizeAnalysis(parseGroqJson(text)), { status: 200, headers: CORS_HEADERS });
+    let parsed: Record<string, unknown>;
+    try {
+      parsed = parseGroqJson(text);
+      debug.jsonParseSuccess = true;
+      debug.parsedKeys = Object.keys(parsed);
+      console.log("[DEBUG] JSON parse success. Keys:", Object.keys(parsed));
+    } catch (parseError) {
+      debug.jsonParseSuccess = false;
+      debug.jsonParseError = parseError instanceof Error ? parseError.message : String(parseError);
+      debug.rawTextForParsing = text.slice(0, 500);
+      console.error("[DEBUG] JSON parse FAILED:", parseError);
+      throw parseError;
+    }
+
+    const result = normalizeAnalysis(parsed);
+    debug.finalRiskLevel = result.riskLevel;
+    debug.finalScore = result.score;
+    console.log("[DEBUG] Final result: riskLevel=", result.riskLevel, "score=", result.score);
+
+    return NextResponse.json({ ...result, debug }, { status: 200, headers: CORS_HEADERS });
   } catch (error) {
-    console.error("PhishGuard analysis fallback:", error instanceof Error ? error.message : error);
-    return NextResponse.json(getFallbackResult(), { status: 200, headers: CORS_HEADERS });
+    debug.error = error instanceof Error ? error.message : String(error);
+    debug.stack = error instanceof Error ? error.stack : undefined;
+    console.error("[DEBUG] ERROR:", error instanceof Error ? error.message : error);
+    console.error("[DEBUG] STACK:", error instanceof Error ? error.stack : "N/A");
+    return NextResponse.json({ ...getFallbackResult(), debug }, { status: 200, headers: CORS_HEADERS });
   }
 }

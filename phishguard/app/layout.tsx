@@ -6,7 +6,7 @@ const inter = Inter({
   subsets: ["latin"],
   display: "swap",
 });
-
+//trigger redploy
 export const metadata: Metadata = {
   title: "PhishGuard",
   description: "Phishing forensics sandbox powered by Gemini AI.",
